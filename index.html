@@ -183,8 +183,10 @@ document.addEventListener("DOMContentLoaded",function(){
   }
   /* Sotto i 640 px una tabella diventa una scheda per riga: il blocco
      viene dal design system delle schede (componenti.md § 0), preso da
-     li' e non riscritto. Dove :is() non c'e' (Safari prima del 14) la
-     tabella resta tale e scorre dentro il suo contenitore .tw, non la pagina. */
+     li' e non riscritto. E' per esteso, una tabella alla volta, perche'
+     Safari prima del 14 scarta per intero una regola con la pseudo-classe
+     is; se il blocco non si applicasse, la tabella scorrerebbe dentro il
+     suo contenitore .tw, non la pagina. */
   @media screen and (max-width:640px){
     table.rec, table.adv, table.glance, table.evi, table.rx { display:block; overflow:visible; border:none; border-radius:0; background:none; }
     table.rec thead, table.adv thead, table.glance thead, table.evi thead, table.rx thead { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0; }
