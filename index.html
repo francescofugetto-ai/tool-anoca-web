@@ -1,0 +1,966 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tool ANOCA">
+<meta name="theme-color" content="#FAF9F7">
+<script data-iphone="sentinella">
+(function(){
+var h=document.documentElement, msg="";
+function ha(c){ return (" "+h.className+" ").indexOf(" "+c+" ")>=0; }
+// L'errore puo' arrivare prima che l'avviso esista — uno script in <head> che
+// non si lascia leggere —: il messaggio si tiene da parte e si scrive quando
+// la pagina c'e'.
+function scrivi(){
+  var e=document.getElementById("nmerr");
+  if(e&&msg) e.textContent="Errore del motore: "+msg;
+}
+function ko(m){
+  if(m&&!msg) msg=m;
+  if(!ha("motore-ko")) h.className+=" motore-ko";
+  scrivi();
+}
+h.className+=" js";
+window.onerror=function(m,src,riga,col){
+  m=String(m);
+  if(/^Script error\.?$/.test(m)) m="il browser non ne mostra il dettaglio (\u00abScript error.\u00bb)";
+  ko(m+(riga?" (riga "+riga+(col?", colonna "+col:"")+")":""));
+};
+document.addEventListener("DOMContentLoaded",function(){
+  if(!ha("motore-ok")) ko(msg||"il motore non ha completato l'avvio"); else scrivi();
+});
+})();
+</script>
+<title>Endotipo ANOCA/INOCA dal test funzionale coronarico invasivo — ESC 2024</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --bg:#FAF9F7; --surface:#FFFFFF; --surface-alt:#F3F2EF;
+    --border:rgba(11,11,11,0.10); --border-strong:rgba(11,11,11,0.18);
+    --text-primary:#0B0B0B; --text-secondary:#52514E; --text-muted:#76746F;
+    --accent-blue:#2A78D6;   --accent-blue-bg:#E6F1FB;   --accent-blue-border:#B5D4F4;
+    --accent-amber:#BA7517;  --accent-amber-bg:#FAEEDA;  --accent-amber-border:#FAC775;
+    --accent-red:#A32D2D;    --accent-red-bg:#FCEBEB;    --accent-red-border:#F7C1C1;
+    --accent-green:#3B6D11;  --accent-green-bg:#EAF3DE;  --accent-green-border:#C0DD97;
+    --accent-purple:#534AB7; --accent-purple-bg:#EEEDFE; --accent-purple-border:#CECBF6;
+    --on-accent:#FFFFFF;
+    --cor-1:#3B8E5A; --cor-2a:#E0A82E; --cor-2b:#DE7E3C; --cor-3:#B33A3A;
+    --k0:#2E7D4F; --k0-bg:#E2F3E8; --k0-bd:#A6D9B8;
+    --k1:#534AB7; --k1-bg:#EEEDFE; --k1-bd:#CECBF6;
+    --k2:#8A6A00; --k2-bg:#FBF3C8; --k2-bd:#EBD56C;
+    --k3:#B45309; --k3-bg:#FDEBD8; --k3-bd:#F4BD85;
+    --k4:#A32D2D; --k4-bg:#FCE3E3; --k4-bd:#F0A9A9;
+    --radius-md:10px;
+    --grid:rgba(83,74,183,.07);
+    --font:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    --display:'IBM Plex Sans Condensed','Arial Narrow',-apple-system,'Segoe UI',sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,Consolas,'Courier New',monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#111418; --surface:#181C22; --surface-alt:#20252D;
+      --border:rgba(255,255,255,.10); --border-strong:rgba(255,255,255,.19);
+      --text-primary:#E7EAEE; --text-secondary:#B8BEC7; --text-muted:#949BA5;
+      --accent-blue:#72AAEE;   --accent-blue-bg:#18283A;   --accent-blue-border:#2E4B6C;
+      --accent-amber:#E3A94F;  --accent-amber-bg:#30250F;  --accent-amber-border:#5D4719;
+      --accent-red:#EF8E8E;    --accent-red-bg:#361B1B;    --accent-red-border:#6B3232;
+      --accent-green:#95C873;  --accent-green-bg:#1C2A13;  --accent-green-border:#3C5626;
+      --accent-purple:#ADA6F2; --accent-purple-bg:#23213B; --accent-purple-border:#454077;
+      --on-accent:#111418;
+      --k0:#8FD3A8; --k0-bg:#132B1D; --k0-bd:#2D5A3E;
+      --k1:#ADA6F2; --k1-bg:#23213B; --k1-bd:#454077;
+      --k2:#EDD36A; --k2-bg:#2C260C; --k2-bd:#5E5120;
+      --k3:#F3B27A; --k3-bg:#33210F; --k3-bd:#6B4524;
+      --k4:#F29A9A; --k4-bg:#361B1B; --k4-bd:#6B3232;
+      --grid:rgba(173,166,242,.06);
+      color-scheme:dark;
+    }
+  }
+  body { font-family:var(--font); background:var(--bg); color:var(--text-primary); font-size:14.5px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  .page { max-width:960px; margin:0 auto; padding:0 16px 4rem; }
+  strong, b { font-weight:600; }
+  .muted { color:var(--text-muted); }
+
+  .hero { margin:0 -16px 0; padding:2.2rem 16px 1.3rem; border-bottom:1px solid var(--border);
+          background-color:var(--bg);
+          background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+          background-size:22px 22px; }
+  .kicker { font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--accent-purple); margin-bottom:8px; }
+  .headline { font-family:var(--display); font-size:30px; font-weight:700; line-height:1.12; margin-bottom:10px; }
+  .lede { font-size:14.5px; color:var(--text-secondary); max-width:760px; margin-bottom:12px; }
+  .lede strong { color:var(--text-primary); }
+  .meta-row { display:flex; flex-wrap:wrap; gap:6px 8px; font-size:12px; }
+  .meta-chip { background:var(--surface); border:1px solid var(--border-strong); border-radius:99px; padding:2px 10px; color:var(--text-secondary); overflow-wrap:anywhere; }
+  .meta-chip strong { color:var(--text-primary); }
+
+  .bar { position:-webkit-sticky; position:-webkit-sticky;position:sticky; top:0; z-index:30; background:var(--bg); border-bottom:1px solid var(--border-strong);
+         margin:0 -16px 1.2rem; padding:8px 16px; display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; }
+  .bar .lbl { font-family:var(--mono); font-size:10.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); }
+  .bar .sp { flex:1 1 auto; }
+  .btn { font:600 12.5px var(--font); padding:6px 13px; border-radius:99px; border:1px solid var(--border-strong); background:var(--surface); color:var(--text-secondary); cursor:pointer; }
+  .btn:hover { border-color:var(--accent-purple); color:var(--accent-purple); }
+
+  .stage { display:flex; align-items:baseline; gap:10px; margin:2rem 0 .7rem; padding-bottom:6px; border-bottom:2px solid var(--border-strong); }
+  .stage-n { font-family:var(--mono); font-size:12px; font-weight:600; color:var(--on-accent); background:var(--accent-purple); border-radius:6px; padding:1px 7px; }
+  .stage-t { font-family:var(--display); font-size:20px; font-weight:700; line-height:1.2; }
+  .stage-w { margin-left:auto; font-size:11.5px; color:var(--text-muted); text-align:right; }
+  .card { background:var(--surface); border:1px solid var(--border-strong); border-radius:12px; padding:14px 16px; margin-bottom:12px; }
+  .card h3 { font-size:13px; font-weight:600; letter-spacing:.02em; margin-bottom:8px; color:var(--text-secondary); }
+  .row { display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin-bottom:10px; }
+  .row:last-child { margin-bottom:0; }
+  .fl { font-size:12.5px; font-weight:600; color:var(--text-secondary); min-width:132px; }
+  .fl small { display:block; font-weight:400; color:var(--text-muted); font-size:11.5px; }
+  input[type=number], select { font:500 15px var(--font); color:var(--text-primary); background:var(--surface); border:1px solid var(--border-strong); border-radius:8px; padding:6px 9px; }
+  input[type=number] { width:104px; text-align:center; }
+  select { max-width:100%; }
+  .seg { display:inline-flex; flex-wrap:wrap; border:1px solid var(--border-strong); border-radius:10px; overflow:hidden; }
+  .seg label { position:relative; cursor:pointer; }
+  .seg input { position:absolute; opacity:0; width:1px; height:1px; }
+  .seg span { display:block; padding:6px 13px; font-size:13.5px; font-weight:500; color:var(--text-secondary); border-right:1px solid var(--border); }
+  .seg label:last-child span { border-right:none; }
+  .seg input:checked + span { background:var(--text-primary); color:var(--bg); }
+  .seg input:focus-visible + span { outline:2px solid var(--accent-purple); outline-offset:-2px; }
+  .hide { display:none !important; }
+  .lettura { margin-top:10px; }
+  .lettura .passo { padding:6px 0; }
+
+  .cat { display:inline-block; font-size:12.5px; font-weight:600; border-radius:99px; padding:2px 10px; border:1px solid; }
+  .k0 { color:var(--k0); background:var(--k0-bg); border-color:var(--k0-bd); }
+  .k1 { color:var(--k1); background:var(--k1-bg); border-color:var(--k1-bd); }
+  .k2 { color:var(--k2); background:var(--k2-bg); border-color:var(--k2-bd); }
+  .k3 { color:var(--k3); background:var(--k3-bg); border-color:var(--k3-bd); }
+  .k4 { color:var(--k4); background:var(--k4-bg); border-color:var(--k4-bd); }
+  .kx { color:var(--text-muted); background:var(--surface-alt); border-color:var(--border-strong); }
+  .cor { display:inline-block; font-family:var(--mono); font-size:11px; font-weight:600; color:#FFFFFF; border-radius:4px; padding:0 5px; margin:0 1px; white-space:nowrap; vertical-align:1px; }
+  .c1 { background:var(--cor-1); } .c2a { background:var(--cor-2a); color:#1D1602; } .c2b { background:var(--cor-2b); } .c3 { background:var(--cor-3); }
+  .pg { font-family:var(--mono); font-size:11px; color:var(--text-muted); white-space:nowrap; }
+  .dv { font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--accent-red); }
+  .nota { border-left:3px solid var(--accent-amber); background:var(--accent-amber-bg); border-radius:0 8px 8px 0; padding:7px 11px; margin-top:8px; font-size:13.5px; }
+  .nota.info { border-left-color:var(--accent-blue); background:var(--accent-blue-bg); }
+  .nota.stop { border-left-color:var(--accent-red); background:var(--accent-red-bg); }
+  .nota.ok { border-left-color:var(--accent-green); background:var(--accent-green-bg); }
+  .nota strong { color:var(--text-primary); }
+  .passo { display:flex; gap:10px; padding:8px 0; border-bottom:1px dashed var(--border); }
+  .passo:last-child { border-bottom:none; }
+  .passo .ico { flex:0 0 22px; font-weight:700; color:var(--accent-purple); text-align:center; }
+  .passo .tx { flex:1 1 auto; font-size:14px; min-width:0; }
+
+  /* endotipi */
+  .eno { border:1px solid var(--border-strong); border-left:4px solid var(--accent-purple); border-radius:0 10px 10px 0; padding:10px 12px; margin-bottom:10px; background:var(--surface); }
+  .eno.conf { border-left-color:var(--accent-amber); }
+  .eno.equiv { border-left-color:var(--text-muted); }
+  .eno-hd { display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 10px; }
+  .eno-n { font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--text-muted); }
+  .eno-nome { font-family:var(--display); font-size:17px; font-weight:700; }
+  .eno-crit { font-size:13.5px; color:var(--text-secondary); margin-top:4px; }
+  .eno-crit b { color:var(--text-primary); }
+  .eno-prev { font-size:12.5px; color:var(--text-muted); margin-top:3px; }
+  .ter-t { font-family:var(--display); font-size:16px; font-weight:700; margin:14px 0 2px; }
+  .ter-t:first-child { margin-top:0; }
+
+  /* tabelle — base del design system (template.html della skill) */
+  table.rx { width:100%; border-collapse:collapse; font-size:12.5px; background:var(--surface); border:.5px solid var(--border-strong); border-radius:var(--radius-md); overflow:hidden; margin:.6rem 0 1rem; }
+  table.rx th { background:var(--surface-alt); text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-secondary); font-weight:600; padding:9px 12px; }
+  table.rx td { padding:10px 12px; border-top:.5px solid var(--border); vertical-align:top; line-height:1.5; }
+  table.rx td[colspan] { white-space:normal; text-align:left; font-weight:400; }
+  table.rx tr.nota-riga > td { font-size:11px; line-height:1.5; color:var(--text-muted); background:var(--surface-alt); text-align:left; white-space:normal; padding:7px 10px; }
+  table.rx tr.nota-riga > td .rich { font-family:var(--mono); font-weight:600; color:var(--accent-purple); margin-right:6px; }
+  table.rx .pg { white-space:normal; }
+  .tw { overflow-x:auto; }
+
+  .limiti li { margin:4px 0 4px 18px; font-size:13.5px; }
+  .foot { margin-top:2.4rem; padding-top:1rem; border-top:1px solid var(--border-strong); font-size:12px; color:var(--text-muted); line-height:1.7; }
+  .foot strong { color:var(--text-secondary); }
+  @media (max-width:640px) {
+    .headline { font-size:25px; }
+    .stage-w { display:none; }
+    .fl { min-width:0; width:100%; }
+    .page { overflow-wrap:anywhere; }
+  }
+  /* Sotto i 640 px una tabella diventa una scheda per riga: il blocco
+     viene dal design system delle schede (componenti.md § 0), preso da
+     li' e non riscritto. Dove :is() non c'e' (Safari prima del 14) la
+     tabella resta tale e scorre dentro il suo contenitore .tw, non la pagina. */
+  @media screen and (max-width:640px){
+    table:is(.rec,.adv,.glance,.evi,.rx){ display:block; overflow:visible; border:none; border-radius:0; background:none; }
+    table:is(.rec,.adv,.glance,.evi,.rx) thead{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0; }
+    table:is(.rec,.adv,.glance,.evi,.rx) :is(tbody,tr,td){ display:block; width:auto; }
+    table:is(.rec,.adv,.glance,.evi,.rx) tr{ background:var(--surface); border:.5px solid var(--border-strong); border-radius:var(--radius-md); padding:9px 12px; margin:0 0 8px; }
+    table:is(.rec,.adv,.glance,.evi,.rx) tr:last-child{ margin-bottom:0; }
+    table:is(.rec,.adv,.glance,.evi,.rx) td{ padding:5px 0 !important; border:0 !important; border-top:.5px dashed var(--border) !important; text-align:left !important; white-space:normal !important; }
+    table:is(.rec,.adv,.glance,.evi,.rx) td:first-child{ border-top:0 !important; }
+    table:is(.rec,.adv,.glance,.evi,.rx) td[data-col]::before{ content:attr(data-col); display:block; margin-bottom:2px; font-size:9.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--text-muted); }
+    table:is(.rec,.adv,.glance,.evi,.rx) td[data-col=""]::before{ display:none; }
+    /* la riga di nota si aggancia alla scheda che sta sopra */
+    table:is(.rec,.adv,.glance,.evi,.rx) tr.nota-riga{ margin:-8px 0 8px; border-top:0;
+      border-radius:0 0 var(--radius-md) var(--radius-md); background:var(--surface-alt); padding:4px 12px; }
+    table:is(.rec,.adv,.glance,.evi,.rx) tr.nota-riga > td{ padding:3px 0 !important; border-top:0 !important; background:none; }
+  }
+  @media print { .bar { position:static; } }
+</style>
+<style data-iphone="stile">
+/* L'avviso e' visibile per costruzione: lo nasconde solo la classe che la
+   sentinella mette quando JavaScript esiste, e lo rimostra quando il motore
+   muore. Nell'anteprima dell'iPhone nessuna delle due arriva. */
+#nomotore{background:#FCEBEB;border:1.5px solid #A32D2D;border-radius:10px;
+ padding:12px 15px;margin:0 0 1.1rem;font-size:13.5px;line-height:1.6;color:#0B0B0B;
+ font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+#nomotore strong{display:block;color:#A32D2D;font-size:15px;margin-bottom:4px}
+#nomotore p{margin:6px 0 0}
+#nomotore a{color:#A32D2D}
+#nomotore .nmurl{font-family:'SFMono-Regular',Consolas,Menlo,monospace;font-size:.92em;word-break:break-all}
+#nomotore .nmerr{display:block;font-family:'SFMono-Regular',Consolas,Menlo,monospace;
+ font-size:11.5px;color:#A32D2D;margin-top:6px;word-break:break-word}
+#nomotore .nmerr:empty{display:none}
+html.js #nomotore{display:none}
+html.js.motore-ko #nomotore{display:block}
+
+#nmprivacy{background:#E2F4F5;border:1px solid #A7DBDE;border-radius:8px;padding:9px 13px;
+ margin:0 0 1rem;font-size:12.5px;line-height:1.55;color:#0B0B0B;
+ font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+@media print{#nmprivacy{display:none}}
+</style>
+</head>
+<body>
+<div class="nomotore" id="nomotore" role="alert">
+ <strong>Motore di calcolo non attivo</strong>
+ <p>I calcoli, i filtri e i comandi di questa pagina <b>non funzionano</b>: dove leggi «—» non c'è un
+ valore. Il testo resta leggibile, i numeri che dipendono dai tuoi dati no. Non usare questa pagina
+ per decidere una dose.</p>
+ <p>Su iPhone e iPad succede sempre con un file salvato sul telefono: si apre nell'<b>anteprima</b> —
+ dall'app File, da Mail, da WhatsApp —, che mostra la pagina ma non esegue il motore, e Apple non
+ permette di aprirlo in Safari. Sull'iPhone il tool funziona aperto da questo indirizzo, in Safari: <a class="nmurl" href="https://francescofugetto-ai.github.io/tool-anoca-web/">https://francescofugetto-ai.github.io/tool-anoca-web/</a> — poi Condividi, «Aggiungi alla schermata Home». Dopo la prima apertura funziona anche senza rete. Su computer e Android basta aprire il file.</p>
+ <span class="nmerr" id="nmerr"></span>
+</div>
+<div class="nmprivacy" id="nmprivacy">
+ <b>Quello che scrivi resta su questo dispositivo.</b> La pagina non invia niente in rete e non
+ salva niente: nessun dato esce da qui. Per la stessa ragione, <b>chiudendola il contenuto si
+ perde</b> — copia il referto dove ti serve prima di chiudere.
+</div>
+<div class="page">
+
+<header class="hero">
+  <div class="kicker">Strumento · Sindrome coronarica cronica · ESC 2024</div>
+  <h1 class="headline">Endotipo ANOCA/INOCA dal test funzionale coronarico invasivo</h1>
+  <p class="lede"><strong>Come si usa.</strong> Inserisci i risultati di un test già eseguito: il passo 1 dice se c'è malattia epicardica che conta (e allora <strong>non è ANOCA</strong>), il passo 2 legge la risposta all'adenosina con la soglia giusta per la <strong>tecnica</strong>, il passo 3 la risposta all'acetilcolina. Il passo 4 dice l'<strong>endotipo</strong> — anche più d'uno, perché si sovrappongono — con il criterio che lo ha fatto scattare; il passo 5 la <strong>terapia</strong> che la fonte associa a ciascuno, con la classe. <strong>Azzera</strong>, in alto, ricomincia.</p>
+  <div class="meta-row">
+    <span class="meta-chip"><strong>Fonte</strong> 2024 ESC Guidelines for the management of chronic coronary syndromes · Eur Heart J 2024;45:3415–3537</span>
+    <span class="meta-chip"><strong>Da</strong> § 5.2 (pp. 3479–3485) · Fig. 12–15 · Rec. Table 25 · FFR/iFR pp. 3446–3447</span>
+    <span class="meta-chip"><strong>Non</strong> guida il test: legge risultati già ottenuti</span>
+  </div>
+</header>
+
+<div class="bar" id="bar" aria-live="polite">
+  <span class="lbl">Epicardio</span> <span id="barEpi" class="cat kx">—</span>
+  <span class="lbl">Endotipo</span> <span id="barEndo" class="cat kx">—</span>
+  <span class="sp"></span>
+  <button class="btn" id="azzera" type="button">Azzera</button>
+</div>
+
+<!-- ═══ PASSO 1 ═══ -->
+<div class="stage"><span class="stage-n">1</span><span class="stage-t">Malattia epicardica: c'è o non c'è?</span><span class="stage-w">FFR/iFR · pp. 3446–3447 · Fig. 13, p. 3482</span></div>
+<div class="card">
+  <div class="row">
+    <span class="fl">Angiografia</span>
+    <span class="seg">
+      <label><input type="radio" name="angio" value="normali"><span>normale o non ostruttiva</span></label>
+      <label><input type="radio" name="angio" value="intermedia"><span>stenosi intermedia</span></label>
+    </span>
+  </div>
+  <div class="row">
+    <span class="fl">FFR <small>significativa se ≤0,80</small></span>
+    <input type="number" id="ffr" min="0" max="1" step="0.01" inputmode="decimal" placeholder="es. 0,86">
+    <span class="fl">iFR <small>significativa se ≤0,89</small></span>
+    <input type="number" id="ifr" min="0" max="1" step="0.01" inputmode="decimal" placeholder="es. 0,93">
+  </div>
+  <div class="lettura" id="epiOut"></div>
+</div>
+
+<!-- ═══ PASSO 2 ═══ -->
+<div class="stage"><span class="stage-n">2</span><span class="stage-t">Microcircolo: la risposta all'adenosina</span><span class="stage-w">endotelio-indipendente · pp. 3480–3481 · Fig. 13</span></div>
+<div class="card">
+  <div class="row">
+    <span class="fl">Tecnica del flusso</span>
+    <span class="seg">
+      <label><input type="radio" name="tecnica" value="doppler"><span>Doppler</span></label>
+      <label><input type="radio" name="tecnica" value="bolo"><span>termodiluizione a bolo</span></label>
+      <label><input type="radio" name="tecnica" value="continua"><span>termodiluizione continua</span></label>
+    </span>
+  </div>
+  <div class="row">
+    <span class="fl">CFR <small>riserva di flusso coronarico</small></span>
+    <input type="number" id="cfr" min="0" max="10" step="0.1" inputmode="decimal" placeholder="es. 2,3">
+  </div>
+  <div class="row hide" id="rigaSceltaCfr">
+    <span class="fl" id="lblSceltaCfr">CFR al confine</span>
+    <select id="sceltaCfr" data-per=""><option value="">—</option><option value="pat">la conto patologica</option><option value="norm">la conto normale</option></select>
+  </div>
+  <div class="row hide" id="rigaImr">
+    <span class="fl">IMR <small>indice di resistenza microcircolatoria, U</small></span>
+    <input type="number" id="imr" min="0" max="500" step="1" inputmode="decimal" placeholder="es. 28">
+  </div>
+  <div class="row hide" id="rigaSceltaImr">
+    <span class="fl">IMR al confine</span>
+    <select id="sceltaImr" data-per=""><option value="">— scegli —</option><option value="pat">lo conto patologico (testo)</option><option value="norm">lo conto normale (Fig. 13)</option></select>
+  </div>
+  <div class="row hide" id="rigaMrr">
+    <span class="fl">MRR <small>riserva di resistenza microvascolare</small></span>
+    <input type="number" id="mrr" min="0" max="20" step="0.1" inputmode="decimal" placeholder="es. 3,1">
+  </div>
+  <div class="row hide" id="rigaHmr">
+    <span class="fl">HMR <small>mmHg/cm/s</small></span>
+    <input type="number" id="hmr" min="0" max="20" step="0.1" inputmode="decimal" placeholder="es. 2,1">
+  </div>
+  <div class="lettura" id="microOut"></div>
+</div>
+
+<!-- ═══ PASSO 3 ═══ -->
+<div class="stage"><span class="stage-n">3</span><span class="stage-t">Acetilcolina: endotelio e spasmo</span><span class="stage-w">Fig. 14, p. 3483 · criteri p. 3482</span></div>
+<div class="card">
+  <div class="row">
+    <span class="fl">Washout di 24 h <small>da calcio-antagonisti e nitrati</small></span>
+    <span class="seg">
+      <label><input type="radio" name="washout" value="si"><span>fatto</span></label>
+      <label><input type="radio" name="washout" value="no"><span>non fatto</span></label>
+    </span>
+  </div>
+  <h3 style="margin-top:14px">Dose bassa — 2 → 20 µg i.c.</h3>
+  <div class="row">
+    <span class="fl">Vasodilatazione</span>
+    <span class="seg">
+      <label><input type="radio" name="achBassa" value="normale"><span>normale</span></label>
+      <label><input type="radio" name="achBassa" value="anomala"><span>anomala</span></label>
+    </span>
+  </div>
+  <h3 style="margin-top:14px">Dose alta — 100 → 200 µg i.c.</h3>
+  <div class="row">
+    <span class="fl">Sintomi riprodotti</span>
+    <span class="seg">
+      <label><input type="radio" name="sint" value="si"><span>sì</span></label>
+      <label><input type="radio" name="sint" value="no"><span>no</span></label>
+    </span>
+  </div>
+  <div class="row">
+    <span class="fl">Alterazioni ECG ischemiche</span>
+    <span class="seg">
+      <label><input type="radio" name="ecg" value="si"><span>sì</span></label>
+      <label><input type="radio" name="ecg" value="no"><span>no</span></label>
+    </span>
+  </div>
+  <div class="row">
+    <span class="fl">Riduzione del lume epicardico ≥90%</span>
+    <span class="seg">
+      <label><input type="radio" name="lume" value="si"><span>sì</span></label>
+      <label><input type="radio" name="lume" value="no"><span>no</span></label>
+    </span>
+  </div>
+  <div class="lettura" id="achOut"></div>
+</div>
+
+<!-- ═══ PASSO 4 ═══ -->
+<div class="stage"><span class="stage-n">4</span><span class="stage-t">L'endotipo</span><span class="stage-w">sei endotipi · p. 3479 · prevalenze Fig. 12, p. 3480</span></div>
+<div class="card" id="endoOut"></div>
+
+<!-- ═══ PASSO 5 ═══ -->
+<div class="stage"><span class="stage-n">5</span><span class="stage-t">La terapia per endotipo</span><span class="stage-w">Fig. 15, p. 3484 · Rec. Table 25, p. 3485</span></div>
+<div class="card" id="terOut"></div>
+
+<!-- ═══ PASSO 6 ═══ -->
+<div class="stage"><span class="stage-n">6</span><span class="stage-t">Il protocollo, come promemoria</span><span class="stage-w">Fig. 14, p. 3483</span></div>
+<div class="card">
+  <p class="muted" style="font-size:13px">Dosi intracoronariche del protocollo della fonte. Il tool non guida il test: questa tabella serve a leggere un referto, non a eseguirlo.</p>
+  <div class="tw">
+  <table class="rx">
+    <thead><tr><th>Passo</th><th>Dose</th><th>Che cosa valuta</th><th>Rene</th><th>Fonte</th></tr></thead>
+    <tbody>
+      <tr><td data-col="Passo"><b>Prima di iniziare</b></td><td data-col="Dose">sospendere calcio-antagonisti e nitrati da almeno 24 h</td><td data-col="Che cosa valuta">condizione del test all'acetilcolina</td><td data-col="Rene">—</td><td data-col="Fonte"><span class="pg">Fig. 14, p. 3483</span></td></tr>
+      <tr><td data-col="Passo"><b>Acetilcolina, dose bassa</b></td><td data-col="Dose">2 µg, poi 20 µg i.c., ciascuna in 60 s<sup>a</sup></td><td data-col="Che cosa valuta">vasodilatazione endotelio-dipendente, epicardica o microvascolare</td><td data-col="Rene">la fonte non lo indica — <span class="dv">DA VERIFICARE</span></td><td data-col="Fonte"><span class="pg">Fig. 14, p. 3483 · p. 3481</span></td></tr>
+      <tr><td data-col="Passo"><b>Acetilcolina, dose alta</b></td><td data-col="Dose">100 µg, poi 200 µg i.c., ciascuna in 60 s<sup>a</sup> · massimo 200 µg</td><td data-col="Che cosa valuta">disfunzione endoteliale e vasocostrizione: spasmo epicardico o microvascolare</td><td data-col="Rene">la fonte non lo indica — <span class="dv">DA VERIFICARE</span></td><td data-col="Fonte"><span class="pg">Fig. 14, p. 3483</span></td></tr>
+      <tr class="nota-riga"><td colspan="5" data-col=""><span class="rich">a.</span>L'aumento delle dosi si ferma appena compare lo spasmo. Dopo ogni dose si ripete l'angiogramma; flusso Doppler, ECG a 12 derivazioni e sintomi sono monitorati di continuo (Fig. 14, p. 3483).</td></tr>
+      <tr><td data-col="Passo"><b>Nitroglicerina</b></td><td data-col="Dose">200 µg i.c.</td><td data-col="Che cosa valuta">risolve lo spasmo; vasodilatazione epicardica endotelio-indipendente</td><td data-col="Rene">la fonte non lo indica — <span class="dv">DA VERIFICARE</span></td><td data-col="Fonte"><span class="pg">Fig. 14, p. 3483 · p. 3482</span></td></tr>
+      <tr><td data-col="Passo"><b>Adenosina</b></td><td data-col="Dose">200 µg i.c.<sup>b</sup></td><td data-col="Che cosa valuta">vasodilatazione endotelio-indipendente: CFR e resistenza microvascolare</td><td data-col="Rene">la fonte non lo indica — <span class="dv">DA VERIFICARE</span></td><td data-col="Fonte"><span class="pg">Fig. 14, p. 3483</span></td></tr>
+      <tr class="nota-riga"><td colspan="5" data-col=""><span class="rich">b.</span>Si può usare anche l'adenosina e.v., e il testo la descrive e.v. a fine procedura (p. 3483); la dose e.v. la fonte non la dà: <span class="dv">DA VERIFICARE</span>. Con controindicazioni all'adenosina si può usare la papaverina, con cautela per il rischio di tachicardia ventricolare polimorfa (p. 3483) — dose: <span class="dv">DA VERIFICARE</span>.</td></tr>
+      <tr><td data-col="Passo"><b>Bradicardia da acetilcolina</b></td><td data-col="Dose">atropina — dose: <span class="dv">DA VERIFICARE</span></td><td data-col="Che cosa valuta">più probabile infondendo nella coronaria destra o in una circonflessa dominante; si previene con l'infusione selettiva nella discendente anteriore, il pacing ventricolare profilattico o una dose o concentrazione più bassa</td><td data-col="Rene">la fonte non lo indica — <span class="dv">DA VERIFICARE</span></td><td data-col="Fonte"><span class="pg">pp. 3481–3482</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="muted" style="font-size:12.5px">Il consenso informato menziona l'uso parenterale non autorizzato dell'acetilcolina; il test lo esegue un emodinamista esperto <span class="pg">p. 3483</span>.</p>
+</div>
+
+<!-- ═══ LIMITI ═══ -->
+<div class="stage"><span class="stage-n">!</span><span class="stage-t">Limiti, e che cosa questo strumento non fa</span></div>
+<div class="card"><ul class="limiti" id="limiti"></ul></div>
+
+<div class="foot">
+  <strong>Fonte.</strong> Vrints C, Andreotti F, Koskinas KC, Rossello X, et al. <em>2024 ESC Guidelines for the management of chronic coronary syndromes.</em> Eur Heart J 2024;45:3415–3537 — § 5.2 (pp. 3479–3485): endotipi (p. 3479), Fig. 12 (p. 3480), soglie di CFR, IMR, HMR e MRR (pp. 3480–3481), criteri dello spasmo (p. 3482), Fig. 13 (p. 3482), Fig. 14 (p. 3483), Fig. 15 (p. 3484), Recommendation Table 25 (p. 3485); FFR e iFR (p. 3446, Recommendation Table 12, p. 3447); IMR (p. 3447). Testo riformulato, nessun passo della fonte riprodotto.<br>
+  <strong>Strumento personale di studio e di consultazione.</strong> Non è un dispositivo medico validato e non sostituisce il giudizio clinico, il referto di chi ha eseguito il test né la scheda tecnica dei farmaci.
+</div>
+
+</div>
+<script>
+(function () {
+  "use strict";
+
+  /* ═══ DATI ═══════════════════════════════════════════════════════════════
+     Ogni soglia con la sua pagina. ESC 2024, Eur Heart J 2024;45:3415–3537. */
+  var SOGLIE = {
+    ffr: 0.80,          // significativa se <=0,80 — p. 3446; Rec. Table 12, p. 3447 (I A)
+    ifr: 0.89,          // significativa se <=0,89 — p. 3446; Rec. Table 12, p. 3447 (I A)
+    cfr: 2.5,           // patologica se <2,5 — Doppler: p. 3481 e Fig. 13 (p. 3482);
+                        //   termodiluzione: stessa soglia, p. 3480 e p. 3481.
+                        //   Legenda della Fig. 12 (p. 3480): «<=2,5» con guida Doppler.
+    cfrTermo: 2.0,      // <2,0 con la termodiluizione: bassa sensibilita' (p. 3480);
+                        //   in letteratura la soglia va da 2,0 a 2,5 (p. 3480)
+    imr: 25,            // testo: >=25 patologico (p. 3481; p. 3447 «>=25 U»);
+                        //   Fig. 13 (p. 3482): >25
+    hmr: 2.5,           // patologico se >2,5 mmHg/cm/s — p. 3481; Fig. 13, p. 3482
+    mrr: 2.7            // patologico se <2,7 — p. 3481 («considerato di recente»)
+  };
+  /* Controllo d'immissione, NON soglie cliniche: un numero fuori da questi
+     campi e' un errore di battitura, e produce «—» con la ragione. Estremo
+     inferiore escluso, superiore incluso. */
+  var DOMINIO = { ffr:[0, 1.05], ifr:[0, 1.05], cfr:[0, 10], imr:[0, 500], hmr:[0, 20], mrr:[0, 20] };
+
+  /* I sei endotipi: elenco del testo, p. 3479. Le prevalenze vengono dalla
+     Fig. 12 e dalla sua legenda (p. 3480), registro ILIAS. */
+  var ENDO = {
+    endo:     { n:"i",   nome:"Disfunzione endoteliale", breve:"endoteliale", prev:"Fig. 12: presente nell'80% dei pazienti con ANOCA del registro ILIAS (p. 3480)." },
+    vasodil:  { n:"ii",  nome:"Vasodilatazione alterata", breve:"vasodilatazione", sotto:"bassa CFR e/o alta resistenza microvascolare", prev:"Fig. 12: CFR ridotta nel 50% (p. 3480)." },
+    vsaEpi:   { n:"iii", nome:"Angina vasospastica epicardica", breve:"spasmo epicardico", prev:"Fig. 12: spasmo all'acetilcolina nel 60%, epicardico e microvascolare insieme (p. 3480)." },
+    vsaMicro: { n:"iv",  nome:"Angina vasospastica microvascolare", breve:"spasmo microvascolare", prev:"Fig. 12: spasmo all'acetilcolina nel 60%, epicardico e microvascolare insieme (p. 3480)." },
+    vsaInd:   { n:"iii/iv", nome:"Angina vasospastica, sede da definire", breve:"spasmo", prev:"Fig. 12: spasmo all'acetilcolina nel 60% (p. 3480)." },
+    comb:     { n:"v",   nome:"Combinazione di endotipi", breve:"combinazione" },
+    equiv:    { n:"vi",  nome:"Risposta equivoca", breve:"risposta equivoca" }
+  };
+
+  /* Terapia per endotipo: Fig. 15 (p. 3484) per le molecole, Rec. Table 25
+     (p. 3485) per le classi, testo pp. 3483–3484. La fonte non da' dosi
+     orali, tranne il diltiazem ad alte dosi nella VSA severa (p. 3483), e
+     non dice nulla del rene: DA VERIFICARE accanto a ciascuno. */
+  var DV = "DA VERIFICARE";
+  var RENE = "la fonte non lo indica — " + DV;
+  var TERAPIA = {
+    endo: [
+      { f:"ACE-inibitore", cor:"IIa", loe:"B", per:"controllo dei sintomi", src:"Rec. Table 25, p. 3485; Fig. 15, p. 3484" },
+      { f:"Statina", cor:null, clNota:"nessuna classe propria nella Rec. Table 25", per:"da considerare, per l'aterosclerosi che spesso coesiste", src:"Fig. 15, p. 3484" }
+    ],
+    vasodil: [
+      { f:"Beta-bloccante", cor:"IIa", loe:"B", gruppo:true, per:"prevenire l'ischemia da domanda", src:"Fig. 15, p. 3484 · classe: Rec. Table 25, p. 3485" },
+      { f:"Calcio-antagonista", cor:"IIa", loe:"B", gruppo:true, per:"prevenire l'ischemia da domanda; l'amlodipina ha migliorato il tempo d'esercizio (p. 3483)", src:"Fig. 15, p. 3484 · classe: Rec. Table 25, p. 3485" },
+      { f:"Ranolazina", cor:"IIa", loe:"B", gruppo:true, per:"prevenire l'ischemia da domanda; ha migliorato il tempo d'esercizio (p. 3483)", src:"Fig. 15, p. 3484 · classe: Rec. Table 25, p. 3485" },
+      { f:"Trimetazidina", cor:"IIa", loe:"B", gruppo:true, per:"prevenire l'ischemia da domanda", src:"Fig. 15, p. 3484 · classe: Rec. Table 25, p. 3485" },
+      { f:"Ivabradina", cor:"IIa", loe:"B", gruppo:true, per:"prevenire l'ischemia da domanda", src:"Fig. 15, p. 3484 · classe: Rec. Table 25, p. 3485" }
+    ],
+    vsaEpi: [
+      { f:"Calcio-antagonista", cor:"I", loe:"A", isolata:true, per:"prima linea: sintomi, ischemia e complicanze potenzialmente fatali", src:"Rec. Table 25, p. 3485; p. 3483" },
+      { f:"Nitrati", cor:"IIa", loe:"B", isolata:true, per:"prevenire le recidive", src:"Rec. Table 25, p. 3485; Fig. 15, p. 3484" },
+      { f:"Nicorandil", cor:null, clNota:"nessuna classe nella Rec. Table 25", per:"alternativa possibile; effetti collaterali frequenti", src:"Fig. 15, p. 3484; p. 3483" },
+      { f:"Diltiazem ad alte dosi", cor:null, clNota:"indicazione del testo, senza classe", per:"VSA severa; in alternativa un calcio-antagonista non diidropiridinico con uno diidropiridinico (per esempio amlodipina)",
+        dose:"<b>2 × 200 mg/die</b> o più, fino a <b>960 mg/die</b>, nella VSA severa <span class='pg'>p. 3483</span> · dose d'avvio: <span class='dv'>" + DV + "</span>", src:"p. 3483" },
+      { f:"Ranolazina", cor:null, clNota:"senza classe", per:"si può aggiungere alla prima linea", src:"pp. 3483–3484" }
+    ],
+    vsaMicro: [
+      { f:"Calcio-antagonista", cor:"I", loe:"A", isolata:true, sede:true, per:"prima linea da considerare anche nello spasmo microvascolare (p. 3483)", src:"p. 3483; Rec. Table 25, p. 3485; Fig. 15, p. 3484" },
+      { f:"Secondo calcio-antagonista", cor:null, clNota:"nessuna classe", per:"in aggiunta al primo; nella VSA severa un non diidropiridinico con un diidropiridinico (p. 3483)", src:"Fig. 15, p. 3484" },
+      { f:"Nitrati", cor:"IIa", loe:"B", isolata:true, sede:true, per:"prevenire le recidive", src:"Fig. 15, p. 3484; Rec. Table 25, p. 3485" },
+      { f:"Ranolazina", cor:null, clNota:"senza classe", per:"si può aggiungere alla prima linea", src:"pp. 3483–3484" }
+    ],
+    vsaInd: [
+      { f:"Calcio-antagonista", cor:null, clNota:"la classe dipende dalla sede, ancora da definire", per:"prima linea da considerare nello spasmo epicardico come in quello microvascolare", src:"p. 3483" }
+    ],
+    comb: [
+      { f:"Nitrati + calcio-antagonisti + altri vasodilatatori", cor:"IIb", loe:"B", per:"terapia di combinazione negli endotipi sovrapposti", src:"Rec. Table 25, p. 3485; nota della Fig. 15, p. 3484" }
+    ]
+  };
+
+  /* ═══ FUNZIONI PURE ═══════════════════════════════════════════════════
+     Prendono lo stato (un oggetto) e rendono un risultato. Non toccano la
+     pagina. */
+
+  function fuori(chiave, v) {
+    var d = DOMINIO[chiave];
+    return v !== null && (!(v > d[0]) || v > d[1]);
+  }
+
+  /* Passo 1. FFR <=0,80 o iFR <=0,89: malattia epicardica emodinamicamente
+     significativa (p. 3446; Rec. Table 12, p. 3447). Senza pressione basta
+     l'angiografia normale o non ostruttiva; con una stenosi intermedia serve
+     FFR/iFR normale (Rec. Table 25, p. 3485). */
+  function epicardio(s) {
+    var r = { stato:null, ffr:null, ifr:null, errori:[], motivo:"", daAngio:false };
+    var f = s.ffr, i = s.ifr;
+    if (f !== null && fuori("ffr", f)) { r.errori.push("FFR " + String(f).replace(".", ",") + " fuori dal campo di un rapporto di pressioni (0–1)"); f = null; }
+    if (i !== null && fuori("ifr", i)) { r.errori.push("iFR " + String(i).replace(".", ",") + " fuori dal campo di un rapporto di pressioni (0–1)"); i = null; }
+    if (f !== null) r.ffr = f <= SOGLIE.ffr ? "sig" : "nonsig";
+    if (i !== null) r.ifr = i <= SOGLIE.ifr ? "sig" : "nonsig";
+    var sig = r.ffr === "sig" || r.ifr === "sig";
+    var nonsig = r.ffr === "nonsig" || r.ifr === "nonsig";
+    if (sig && nonsig) { r.stato = "discordante"; r.motivo = "FFR e iFR non concordano, e la fonte non dice quale prevalga"; }
+    else if (sig) r.stato = "ostruttiva";
+    else if (nonsig) r.stato = "non ostruttiva";
+    else if (s.angio === "normali") { r.stato = "non ostruttiva"; r.daAngio = true; }
+    else if (s.angio === "intermedia") { r.stato = "manca"; r.motivo = "stenosi intermedia senza FFR né iFR: la malattia epicardica non è esclusa"; }
+    else { r.stato = "manca"; r.motivo = "indica l'angiografia, oppure FFR o iFR"; }
+    return r;
+  }
+
+  /* Passo 2. La CFR si legge solo con la tecnica. */
+  function leggiCfr(s) {
+    var v = s.cfr;
+    if (v === null) return { stato:"manca" };
+    if (fuori("cfr", v)) return { stato:"fuori", v:v };
+    if (!s.tecnica) return { stato:"tecnica", v:v };
+    if (s.tecnica === "doppler") {
+      if (v < SOGLIE.cfr) return { stato:"pat", v:v };
+      if (v === SOGLIE.cfr) {
+        /* testo p. 3481 e Fig. 13 p. 3482: <2,5 · legenda Fig. 12 p. 3480: <=2,5 */
+        if (s.sceltaCfr === "pat") return { stato:"pat", v:v, zona:"doppler25", scelta:true };
+        if (s.sceltaCfr === "norm") return { stato:"norm", v:v, zona:"doppler25", scelta:true };
+        return { stato:"confine", v:v, zona:"doppler25" };
+      }
+      return { stato:"norm", v:v };
+    }
+    /* termodiluizione, a bolo o continua */
+    if (v < SOGLIE.cfrTermo) return { stato:"pat", v:v };
+    if (v < SOGLIE.cfr) {
+      /* 2,0–2,49: patologica con la soglia che la fonte adotta (<2,5,
+         p. 3480); normale con la soglia <2,0, poco sensibile */
+      if (s.sceltaCfr === "norm") return { stato:"norm", v:v, zona:"termo20", scelta:true };
+      return { stato:"pat", v:v, zona:"termo20", scelta:s.sceltaCfr === "pat" };
+    }
+    return { stato:"norm", v:v };
+  }
+  /* IMR: dalla termodiluizione (p. 3447). A 25 esatto testo e figura
+     discordano. */
+  function leggiImr(s) {
+    if (s.tecnica === "doppler") return { stato:"np" };
+    var v = s.imr;
+    if (v === null) return { stato:"manca" };
+    if (fuori("imr", v)) return { stato:"fuori", v:v };
+    if (v > SOGLIE.imr) return { stato:"pat", v:v };
+    if (v === SOGLIE.imr) {
+      if (s.sceltaImr === "pat") return { stato:"pat", v:v, zona:"imr25", scelta:true };
+      if (s.sceltaImr === "norm") return { stato:"norm", v:v, zona:"imr25", scelta:true };
+      return { stato:"confine", v:v, zona:"imr25" };
+    }
+    return { stato:"norm", v:v };
+  }
+  /* HMR: dal Doppler (p. 3481). */
+  function leggiHmr(s) {
+    if (s.tecnica !== "doppler") return { stato:"np" };
+    var v = s.hmr;
+    if (v === null) return { stato:"manca" };
+    if (fuori("hmr", v)) return { stato:"fuori", v:v };
+    return { stato:v > SOGLIE.hmr ? "pat" : "norm", v:v };
+  }
+  /* MRR: dalla termodiluizione continua (p. 3447, p. 3481). */
+  function leggiMrr(s) {
+    if (s.tecnica !== "continua") return { stato:"np" };
+    var v = s.mrr;
+    if (v === null) return { stato:"manca" };
+    if (fuori("mrr", v)) return { stato:"fuori", v:v };
+    return { stato:v < SOGLIE.mrr ? "pat" : "norm", v:v };
+  }
+
+  /* Endotipo (ii): bassa CFR e/o alta resistenza microvascolare (p. 3479).
+     alterata: true · false · "confine" · null (non si puo' dire). */
+  function microcircolo(s) {
+    var c = leggiCfr(s);
+    var ind = [["IMR", leggiImr(s)], ["HMR", leggiHmr(s)], ["MRR", leggiMrr(s)]];
+    var pat = [], conf = [], resNorm = 0, manca = [];
+    if (c.stato === "pat") pat.push("CFR " + nfx(c.v));
+    if (c.stato === "confine") conf.push("CFR " + nfx(c.v));
+    for (var k = 0; k < ind.length; k++) {
+      var x = ind[k][1];
+      if (x.stato === "pat") pat.push(ind[k][0] + " " + nfx(x.v));
+      else if (x.stato === "confine") conf.push(ind[k][0] + " " + nfx(x.v));
+      else if (x.stato === "norm") resNorm++;
+    }
+    var alterata;
+    if (pat.length) alterata = true;
+    else if (conf.length) alterata = "confine";
+    else if (c.stato === "norm" && resNorm > 0) alterata = false;
+    else {
+      alterata = null;
+      if (!s.tecnica) manca.push("la tecnica del flusso");
+      if (c.stato !== "norm") manca.push("la CFR");
+      if (resNorm === 0) manca.push("un indice di resistenza (" + (s.tecnica === "doppler" ? "HMR" : (s.tecnica === "continua" ? "IMR o MRR" : "IMR o HMR")) + ")");
+    }
+    return { cfr:c, imr:ind[0][1], hmr:ind[1][1], mrr:ind[2][1], alterata:alterata, pat:pat, conf:conf, manca:manca };
+  }
+
+  /* Endotipo (i): acetilcolina a dose bassa, 2–20 µg (Fig. 13, p. 3482;
+     Fig. 14, p. 3483). La fonte non da' una soglia numerica: legge chi ha
+     eseguito il test. */
+  function endotelio(s) {
+    if (s.achBassa === "anomala") return true;
+    if (s.achBassa === "normale") return false;
+    return null;
+  }
+
+  /* Endotipi (iii) e (iv): criteri della p. 3482. Spasmo epicardico =
+     sintomi + ECG ischemico + riduzione angiografica del lume >=90%; con
+     riduzione <90%, spasmo microvascolare. */
+  function spasmo(s) {
+    var si = s.sint, ec = s.ecg, lu = s.lume;
+    if (si === "" && ec === "" && lu === "") return { tipo:"manca" };
+    if (si === "si" && ec === "si") {
+      if (lu === "si") return { tipo:"epicardico" };
+      if (lu === "no") return { tipo:"microvascolare" };
+      return { tipo:"indeterminato" };
+    }
+    if (si === "no" || ec === "no") {
+      var assenti = [];
+      if (si === "no") assenti.push("sintomi riprodotti");
+      if (ec === "no") assenti.push("alterazioni ECG ischemiche");
+      if (lu === "si") return { tipo:"nonclassificabile", assenti:assenti };
+      return { tipo:"negativo", sintomi:si === "si", assenti:assenti };
+    }
+    return { tipo:"incompleto" };
+  }
+
+  /* L'insieme: quali endotipi, con quale criterio. */
+  function endotipi(s) {
+    var ep = epicardio(s), mc = microcircolo(s), en = endotelio(s), sp = spasmo(s);
+    var r = { epicardio:ep, micro:mc, endotelio:en, spasmo:sp, lista:[], confine:[], combinazione:false,
+              equivoca:false, mancano:[], ostruttiva:ep.stato === "ostruttiva",
+              provvisorio:ep.stato === "manca" || ep.stato === "discordante" };
+    if (r.ostruttiva) return r;
+    if (en === true) r.lista.push({ id:"endo", criterio:"vasodilatazione anomala all'acetilcolina a dose bassa (2–20 µg)" });
+    if (mc.alterata === true) r.lista.push({ id:"vasodil", criterio:mc.pat.join(" · ") });
+    if (sp.tipo === "epicardico") r.lista.push({ id:"vsaEpi", criterio:"sintomi riprodotti + alterazioni ECG ischemiche + riduzione del lume ≥90%" });
+    if (sp.tipo === "microvascolare") r.lista.push({ id:"vsaMicro", criterio:"sintomi riprodotti + alterazioni ECG ischemiche, con riduzione del lume &lt;90%" });
+    if (sp.tipo === "indeterminato") r.lista.push({ id:"vsaInd", criterio:"sintomi riprodotti + alterazioni ECG ischemiche; manca la riduzione del lume" });
+    if (mc.alterata === "confine") r.confine = mc.conf;
+    r.combinazione = r.lista.length >= 2;
+    if (en === null) r.mancano.push("l'acetilcolina a dose bassa");
+    if (mc.alterata === null) r.mancano = r.mancano.concat(mc.manca);
+    if (sp.tipo === "manca") r.mancano.push("l'acetilcolina a dose alta");
+    if (sp.tipo === "incompleto") r.mancano.push("sintomi e ECG all'acetilcolina a dose alta");
+    /* (vi) risposta equivoca: angina senza i criteri di alcun endotipo
+       (p. 3479) — si dice solo a test completo e tutto negativo */
+    r.equivoca = r.lista.length === 0 && r.confine.length === 0 && en === false &&
+                 mc.alterata === false && sp.tipo === "negativo";
+    return r;
+  }
+
+  /* Le righe di terapia per un endotipo, e le note che le spiegano una volta
+     sola sotto la tabella. isolata: l'endotipo e' l'unico presente — la
+     Rec. Table 25 da' I A e IIa B all'angina vasospastica ISOLATA (p. 3485). */
+  var NOTE = {
+    gruppo: "La Rec. Table 25 dà la IIa B al gruppo degli antianginosi che prevengono l'ischemia da domanda, senza nominarli (p. 3485); le molecole vengono dalla Fig. 15 (p. 3484). La tabella delle raccomandazioni nuove scrive invece «beta-bloccanti» (p. 3429).",
+    isolata: "I A e IIa B sono le classi dell'angina vasospastica isolata (p. 3485): qui gli endotipi sono sovrapposti, e per la combinazione la classe è IIb B (v).",
+    sede: "La Rec. Table 25 dice «angina vasospastica» senza distinguere la sede (p. 3485); il testo mette i calcio-antagonisti in prima linea sia nello spasmo epicardico sia in quello microvascolare (p. 3483)."
+  };
+  function terapia(id, isolata) {
+    var base = TERAPIA[id] || [], righe = [], note = [], lettere = "abc", visti = {};
+    function richiamo(chiave) {
+      if (!visti[chiave]) { visti[chiave] = lettere.charAt(note.length); note.push({ l:visti[chiave], t:NOTE[chiave] }); }
+      return visti[chiave];
+    }
+    for (var i = 0; i < base.length; i++) {
+      var t = base[i], nota = t.clNota || "", sup = [];
+      if (t.gruppo) { nota = "classe del gruppo"; sup.push(richiamo("gruppo")); }
+      if (t.isolata && !isolata) { nota = "classe della forma isolata"; sup.push(richiamo("isolata")); }
+      if (t.sede) { nota = (nota ? nota + "; " : "") + "sede non distinta"; sup.push(richiamo("sede")); }
+      righe.push({ f:t.f, cor:t.cor, loe:t.loe || null, clNota:nota, sup:sup, per:t.per, dose:t.dose || null, rene:RENE, src:t.src });
+    }
+    return { righe:righe, note:note };
+  }
+
+  /* ═══ STATO ══════════════════════════════════════════════════════════ */
+  function el(id) { return document.getElementById(id); }
+  function num(id) {
+    var e = el(id); if (!e) return null;
+    var v = String(e.value).replace(",", ".").trim();
+    if (v === "") return null;
+    var n = parseFloat(v);
+    return isFinite(n) ? n : null;
+  }
+  function radio(n) { var e = document.querySelector('input[name="' + n + '"]:checked'); return e ? e.value : ""; }
+  function S() {
+    return {
+      angio:radio("angio"), ffr:num("ffr"), ifr:num("ifr"),
+      tecnica:radio("tecnica"), cfr:num("cfr"), imr:num("imr"), hmr:num("hmr"), mrr:num("mrr"),
+      sceltaCfr:el("sceltaCfr").value, sceltaImr:el("sceltaImr").value,
+      washout:radio("washout"), achBassa:radio("achBassa"),
+      sint:radio("sint"), ecg:radio("ecg"), lume:radio("lume")
+    };
+  }
+
+  /* ═══ DISEGNO ════════════════════════════════════════════════════════ */
+  function nfx(v) { return String(Math.round(v * 100) / 100).replace(".", ","); }
+  function pgs(p) { return ' <span class="pg">' + p + "</span>"; }
+  function corPill(c, l) { if (!c) return ""; var k = { "I":"c1", "IIa":"c2a", "IIb":"c2b", "III":"c3" }[c]; return '<span class="cor ' + k + '">' + c + (l ? " " + l : "") + "</span>"; }
+  function nota(g, t) { return '<div class="nota' + (g ? " " + g : "") + '">' + t + "</div>"; }
+  function passo(ico, tx) { return '<div class="passo"><span class="ico">' + ico + '</span><span class="tx">' + tx + "</span></div>"; }
+  function chip(id, k, t) { var e = el(id); e.className = "cat " + k; e.innerHTML = t; }
+  function mostra(id, si) { var e = el(id); e.className = e.className.replace(/\s*hide/g, "") + (si ? "" : " hide"); }
+
+  /* Le scelte al confine valgono per il valore per cui sono state fatte:
+     se il valore o la tecnica cambiano, si azzerano. */
+  function allineaScelta(idSel, chiave) {
+    var e = el(idSel);
+    if (e.getAttribute("data-per") !== chiave) { e.value = ""; e.setAttribute("data-per", chiave); }
+  }
+
+  var ETEC = { doppler:"Doppler", bolo:"termodiluizione a bolo", continua:"termodiluizione continua" };
+
+  function disegnaEpi(ep, s) {
+    var h = "";
+    for (var i = 0; i < ep.errori.length; i++) h += nota("stop", "—: " + ep.errori[i] + ". Controlla il numero.");
+    if (s.ffr !== null && ep.ffr) h += passo(ep.ffr === "sig" ? "!" : "✓", "FFR " + nfx(s.ffr) + ": " + (ep.ffr === "sig" ? "<b>significativa</b> (≤0,80)" : "non significativa (sopra 0,80)") + pgs("p. 3446; Rec. Table 12, p. 3447"));
+    if (s.ifr !== null && ep.ifr) h += passo(ep.ifr === "sig" ? "!" : "✓", "iFR " + nfx(s.ifr) + ": " + (ep.ifr === "sig" ? "<b>significativa</b> (≤0,89)" : "non significativa (sopra 0,89)") + pgs("p. 3446; Rec. Table 12, p. 3447"));
+    if (ep.stato === "ostruttiva") h += nota("stop", "<b>Malattia epicardica emodinamicamente significativa: non è ANOCA/INOCA.</b> Vedi i passi 4 e 5.");
+    else if (ep.stato === "discordante") h += nota("", "<b>FFR e iFR discordano.</b> Una delle due è sotto la sua soglia e l'altra no, e la fonte non dice quale prevalga: la malattia epicardica non è esclusa. Gli endotipi qui sotto sono <b>provvisori</b>.");
+    else if (ep.stato === "non ostruttiva") h += nota("ok", ep.daAngio
+      ? "Coronarie normali o lesioni non ostruttive: è il quadro in cui si sospetta ANOCA/INOCA" + pgs("Rec. Table 25, p. 3485") + ". Con una stenosi intermedia servirebbe FFR o iFR."
+      : "<b>Nessuna malattia epicardica che conti</b> alla pressione: si prosegue con il microcircolo" + pgs("Fig. 13, p. 3482") + ".");
+    else h += nota("", "—: " + ep.motivo + ". La fonte chiede coronarie normali o lesioni non ostruttive, oppure stenosi intermedie con FFR/iFR normale" + pgs("Rec. Table 25, p. 3485") + ".");
+    el("epiOut").innerHTML = h;
+  }
+
+  function disegnaMicro(mc, s) {
+    var h = "", c = mc.cfr, tec = ETEC[s.tecnica] || "";
+    if (c.stato === "manca") h += passo("—", "CFR: non inserita.");
+    else if (c.stato === "fuori") h += nota("stop", "—: CFR " + nfx(c.v) + " fuori dal campo ammesso (0–10). Controlla il numero.");
+    else if (c.stato === "tecnica") h += nota("", "—: CFR " + nfx(c.v) + " senza tecnica. <b>La soglia di CFR cambia con la tecnica</b>" + pgs("p. 3480") + ": indica Doppler o termodiluizione.");
+    else if (c.zona === "doppler25" && c.stato === "confine")
+      h += nota("", "CFR 2,5 con il Doppler — <b>al confine</b>. Il testo" + pgs("p. 3481") + " e la Fig. 13" + pgs("p. 3482") + " chiamano patologica la CFR sotto 2,5, e 2,5 sarebbe normale; la legenda della Fig. 12, per la stessa misura Doppler, scrive «≤2,5»" + pgs("p. 3480") + ", e 2,5 sarebbe patologica. Scegli qui sopra come contarla.");
+    else if (c.zona === "termo20")
+      h += passo(c.stato === "pat" ? "!" : "✓", "CFR " + nfx(c.v) + " (" + tec + "): <b>" + (c.stato === "pat" ? "patologica" : "normale") + "</b>" + (c.scelta || c.stato === "norm" ? " — scelta tua" : "") +
+        ". Fra 2,0 e 2,5: la fonte adotta anche per la termodiluizione la soglia del Doppler, <b>&lt;2,5</b>, perché &lt;2,0 ha bassa sensibilità" + pgs("p. 3480; p. 3481") + "; le soglie usate negli studi vanno comunque da 2,0 a 2,5" + pgs("p. 3480") + ". Se usi 2,0, sceglilo qui sopra.");
+    else h += passo(c.stato === "pat" ? "!" : "✓", "CFR " + nfx(c.v) + " (" + tec + "): <b>" + (c.stato === "pat" ? "patologica" : "normale") + "</b>" + (c.scelta ? " — scelta tua al confine" : "") + " — soglia &lt;2,5" + pgs(s.tecnica === "doppler" ? "p. 3481; Fig. 13, p. 3482" : "pp. 3480–3481"));
+
+    var r = mc.imr;
+    if (r.stato === "fuori") h += nota("stop", "—: IMR " + nfx(r.v) + " fuori dal campo ammesso (0–500). Controlla il numero.");
+    else if (r.stato === "confine") h += nota("", "IMR 25 — <b>al confine: il testo lo conta patologico, la figura no.</b> Il testo scrive ≥25" + pgs("p. 3481; p. 3447") + ", la Fig. 13 &gt;25" + pgs("p. 3482") + ". Scegli qui sopra come contarlo.");
+    else if (r.stato === "pat" || r.stato === "norm") h += passo(r.stato === "pat" ? "!" : "✓", "IMR " + nfx(r.v) + ": <b>" + (r.stato === "pat" ? "patologico" : "normale") + "</b>" + (r.scelta ? " — scelta tua al confine (testo ≥25, figura &gt;25)" : " — sopra 25 è patologico per testo e figura") + pgs("p. 3481; Fig. 13, p. 3482"));
+    r = mc.hmr;
+    if (r.stato === "fuori") h += nota("stop", "—: HMR " + nfx(r.v) + " fuori dal campo ammesso (0–20). Controlla il numero.");
+    else if (r.stato === "pat" || r.stato === "norm") h += passo(r.stato === "pat" ? "!" : "✓", "HMR " + nfx(r.v) + " mmHg/cm/s: <b>" + (r.stato === "pat" ? "patologico" : "normale") + "</b> — soglia &gt;2,5" + pgs("p. 3481; Fig. 13, p. 3482"));
+    r = mc.mrr;
+    if (r.stato === "fuori") h += nota("stop", "—: MRR " + nfx(r.v) + " fuori dal campo ammesso (0–20). Controlla il numero.");
+    else if (r.stato === "pat" || r.stato === "norm") h += passo(r.stato === "pat" ? "!" : "✓", "MRR " + nfx(r.v) + ": <b>" + (r.stato === "pat" ? "patologica" : "normale") + "</b> — soglia &lt;2,7, proposta di recente e assente dalla Fig. 13" + pgs("p. 3481"));
+    if (s.tecnica === "bolo") h += nota("info", "Nelle misure ripetute la termodiluizione continua ha mostrato meno variabilità di quella a bolo" + pgs("p. 3481; p. 3447") + ".");
+    el("microOut").innerHTML = h;
+  }
+
+  function disegnaAch(en, sp, s) {
+    var h = "";
+    if (en === true) h += passo("!", "Dose bassa: <b>vasodilatazione anomala</b> — disfunzione endoteliale" + pgs("Fig. 13, p. 3482; Fig. 14, p. 3483"));
+    else if (en === false) h += passo("✓", "Dose bassa: vasodilatazione endotelio-dipendente normale.");
+    else h += passo("—", "Dose bassa: non inserita.");
+    if (sp.tipo === "epicardico") h += nota("stop", "<b>Spasmo epicardico</b>: sintomi, alterazioni ECG ischemiche e riduzione del lume ≥90% — i tre criteri insieme" + pgs("p. 3482") + ".");
+    else if (sp.tipo === "microvascolare") h += nota("stop", "<b>Spasmo microvascolare</b>: sintomi e alterazioni ECG ischemiche con riduzione del lume sotto il 90%" + pgs("p. 3482") + ".");
+    else if (sp.tipo === "indeterminato") h += nota("", "Sintomi e alterazioni ECG ischemiche: lo spasmo c'è. Per dire se è <b>epicardico</b> (riduzione del lume ≥90%) o <b>microvascolare</b> (&lt;90%) serve la riduzione del lume" + pgs("p. 3482") + ".");
+    else if (sp.tipo === "nonclassificabile") h += nota("stop", "<b>Riduzione del lume ≥90% senza " + sp.assenti.join(" né ") + ".</b> Per lo spasmo epicardico la fonte chiede sintomi, ECG ischemico e riduzione ≥90% insieme" + pgs("p. 3482") + ", e questo quadro non lo classifica. Il tool non lo chiama spasmo né lo esclude: decide chi ha eseguito il test.");
+    else if (sp.tipo === "negativo") h += passo("✓", "Dose alta: nessun criterio di spasmo (manca" + (sp.assenti.length > 1 ? "no " : " ") + sp.assenti.join(" e ") + ")" + pgs("p. 3482") + "." +
+      (sp.sintomi ? " I sintomi riprodotti senza alterazioni ECG non bastano per uno spasmo: se anche il resto è negativo, è il quadro della <b>risposta equivoca</b>" + pgs("p. 3479") + "." : ""));
+    else if (sp.tipo === "incompleto") h += nota("", "—: dose alta incompleta. Indica sintomi e alterazioni ECG: senza, lo spasmo non si può né dire né escludere" + pgs("p. 3482") + ".");
+    else h += passo("—", "Dose alta: non inserita.");
+    var usata = en !== null || sp.tipo !== "manca";
+    if (s.washout === "no" && usata) h += nota("", "<b>Washout non fatto.</b> Il protocollo chiede almeno 24 ore senza calcio-antagonisti e nitrati prima dell'acetilcolina" + pgs("Fig. 14, p. 3483") + ". Una risposta negativa ottenuta così è fuori protocollo, e la fonte non dice come leggerla.");
+    else if (s.washout === "" && usata) h += nota("info", "Indica se il washout di 24 ore da calcio-antagonisti e nitrati c'è stato" + pgs("Fig. 14, p. 3483") + ".");
+    el("achOut").innerHTML = h;
+  }
+
+  function schedaEndo(id, criterio, classe) {
+    var d = ENDO[id];
+    return '<div class="eno' + (classe ? " " + classe : "") + '" data-endo="' + id + '"><div class="eno-hd"><span class="eno-n">(' + d.n + ')</span><span class="eno-nome">' + d.nome + "</span></div>" +
+      (d.sotto ? '<div class="eno-prev">' + d.sotto + "</div>" : "") +
+      '<div class="eno-crit"><b>Perché:</b> ' + criterio + "</div>" +
+      (d.prev ? '<div class="eno-prev">' + d.prev + "</div>" : "") + "</div>";
+  }
+
+  function disegnaEndo(r, s) {
+    var h = "";
+    if (r.ostruttiva) {
+      h += nota("stop", "<b>Non è ANOCA/INOCA.</b> FFR ≤0,80 o iFR ≤0,89: la stenosi è emodinamicamente significativa" + pgs("p. 3446; Rec. Table 12, p. 3447") + ". Il percorso è quello della <b>CAD ostruttiva</b>: terapia medica secondo linee guida, con o senza coronarografia e rivascolarizzazione" + pgs("Fig. 13, p. 3482") + ".");
+      h += passo("·", "Una CFR sotto 2,5 indica una risposta microcircolatoria anomala <b>nella CAD non ostruttiva</b>" + pgs("p. 3481") + ": qui i dati del microcircolo e dell'acetilcolina non diventano un endotipo.");
+      el("endoOut").innerHTML = h;
+      return;
+    }
+    if (r.provvisorio) h += nota("", "<b>Endotipi provvisori.</b> " + (r.epicardio.stato === "discordante" ? "FFR e iFR discordano" : "La malattia epicardica non è esclusa (" + r.epicardio.motivo + ")") + ": ANOCA/INOCA presuppone coronarie non ostruttive" + pgs("Rec. Table 25, p. 3485") + ".");
+    for (var i = 0; i < r.lista.length; i++) h += schedaEndo(r.lista[i].id, r.lista[i].criterio, "");
+    if (r.combinazione) {
+      var nomi = [];
+      for (var j = 0; j < r.lista.length; j++) nomi.push(ENDO[r.lista[j].id].breve);
+      h += schedaEndo("comb", nomi.length + " endotipi insieme: " + nomi.join(" + ") + ". Si sovrappongono spesso, e allora la terapia si combina" + pgs("nota della Fig. 15, p. 3484") + "; la disfunzione endoteliale accompagna quasi sempre lo spasmo e la vasodilatazione alterata" + pgs("p. 3481"), "");
+    }
+    if (r.confine.length) h += '<div class="eno conf" data-endo="confine"><div class="eno-hd"><span class="eno-n">(ii?)</span><span class="eno-nome">Vasodilatazione alterata — al confine</span><span class="cat k2">da decidere</span></div><div class="eno-crit"><b>Perché:</b> ' + r.confine.join(" · ") + " sta sulla soglia, e la fonte la scrive in due modi diversi. Scegli al passo 2 come contarlo: l'endotipo (ii) c'è o non c'è secondo quella scelta.</div></div>";
+    if (r.equivoca) {
+      h += schedaEndo("equiv", "angina senza i criteri di alcun endotipo: CFR e resistenza normali, endotelio normale, nessun criterio di spasmo" + (r.spasmo.sintomi ? " (sintomi riprodotti senza alterazioni ECG)" : "") + pgs("p. 3479"), "equiv");
+      if (s.washout === "no") h += nota("", "Risposta ottenuta <b>senza il washout di 24 ore</b>: fuori protocollo" + pgs("Fig. 14, p. 3483") + ".");
+    }
+    if (r.spasmo.tipo === "nonclassificabile") h += nota("stop", "Lo spasmo resta <b>non classificato</b> (passo 3): finché non lo è, il tool non conclude né per un endotipo vasospastico né per una risposta equivoca.");
+    if (!r.lista.length && !r.equivoca && !r.confine.length) {
+      h += '<div class="eno equiv" data-endo="nessuno"><div class="eno-hd"><span class="eno-nome">—</span></div><div class="eno-crit">Nessun endotipo fra i test inseriti' +
+        (r.mancano.length ? ". Per dire «risposta equivoca» servono tutti, e mancano: <b>" + r.mancano.join(", ") + "</b>." : ".") + "</div></div>";
+    } else if (r.mancano.length && (r.lista.length || r.confine.length)) {
+      h += nota("info", "Non ancora valutati: " + r.mancano.join(", ") + ". Un altro endotipo può sommarsi a quelli trovati.");
+    }
+    if (r.lista.length || r.equivoca) h += '<p class="muted" style="font-size:12.5px;margin-top:6px">Le prevalenze vengono dal registro ILIAS: pazienti già inviati al test invasivo, e la frequenza dello spasmo cambia con la dose di acetilcolina e il protocollo <span class="pg">p. 3480</span>.</p>';
+    el("endoOut").innerHTML = h;
+  }
+
+  function tabellaTerapia(tt) {
+    var righe = tt.righe;
+    var h = '<div class="tw"><table class="rx"><thead><tr><th>Farmaco</th><th>Classe</th><th>Per che cosa</th><th>Dose</th><th>Rene</th><th>Fonte</th></tr></thead><tbody>';
+    for (var i = 0; i < righe.length; i++) {
+      var t = righe[i];
+      h += "<tr><td data-col=\"Farmaco\"><b>" + t.f + "</b></td>" +
+        '<td data-col="Classe">' + (t.cor ? corPill(t.cor, t.loe) : "—") + (t.sup.length ? "<sup>" + t.sup.join(",") + "</sup>" : "") + (t.clNota ? '<br><small class="muted">' + t.clNota + "</small>" : "") + "</td>" +
+        '<td data-col="Per che cosa">' + t.per + "</td>" +
+        '<td data-col="Dose">' + (t.dose ? t.dose : 'dose: <span class="dv">' + DV + "</span>") + "</td>" +
+        '<td data-col="Rene">rene: ' + t.rene.replace(DV, '<span class="dv">' + DV + "</span>") + "</td>" +
+        '<td data-col="Fonte"><span class="pg">' + t.src + "</span></td></tr>";
+    }
+    for (var j = 0; j < tt.note.length; j++)
+      h += '<tr class="nota-riga"><td colspan="6" data-col=""><span class="rich">' + tt.note[j].l + ".</span>" + tt.note[j].t + "</td></tr>";
+    return h + "</tbody></table></div>";
+  }
+
+  function disegnaTerapia(r, s) {
+    var h = "";
+    if (r.ostruttiva) {
+      h += passo("→", "<b>Percorso della CAD ostruttiva</b>: terapia medica secondo linee guida, con o senza coronarografia" + pgs("Fig. 13, p. 3482") + "; FFR/iFR guidano la decisione di rivascolarizzare " + corPill("I", "A") + pgs("Rec. Table 12, p. 3447") + ".");
+      if (r.micro.cfr.stato === "norm") h += passo("·", "Con FFR anomala e CFR normale, le lesioni lasciate senza trattamento hanno avuto una buona evoluzione fino a 5 anni" + pgs("p. 3447") + ".");
+      if (r.micro.cfr.stato === "pat") h += passo("·", "Con FFR e CFR discordanti la prognosi è stata simile a quella delle lesioni con FFR e CFR entrambe anomale trattate con PCI" + pgs("p. 3447") + ".");
+      el("terOut").innerHTML = h;
+      return;
+    }
+    h += '<div class="ter-t">Per tutti: stile di vita e fattori di rischio</div>';
+    h += passo("1", "Alimentazione, esercizio, gestione dello stress, controllo del peso, stop al fumo" + pgs("Fig. 15, p. 3484; p. 3483"));
+    h += passo("2", "Ipertensione, dislipidemia e diabete gestiti secondo le rispettive linee guida" + pgs("Fig. 15, p. 3484; p. 3483"));
+    if (r.lista.length) {
+      h += passo("3", "Terapia medica <b>guidata dal risultato del test</b>, per sintomi e qualità di vita " + corPill("IIa", "A") + pgs("Rec. Table 25, p. 3485") + ".");
+      var isolata = r.lista.length === 1;
+      var haCcb = false, haIva = false;
+      for (var i = 0; i < r.lista.length; i++) {
+        var id = r.lista[i].id, d = ENDO[id];
+        h += '<div class="ter-t" data-ter="' + id + '">(' + d.n + ") " + d.nome + "</div>";
+        h += tabellaTerapia(terapia(id, isolata));
+        if (id !== "endo") haCcb = true;
+        if (id === "vasodil") haIva = true;
+      }
+      if (r.combinazione) {
+        h += '<div class="ter-t" data-ter="comb">(v) Endotipi sovrapposti</div>';
+        h += tabellaTerapia(terapia("comb", false));
+      }
+      if (haCcb) h += nota("", "<b>Diltiazem e verapamil</b> aumentano gli eventi da scompenso nell'HFrEF e vi sono controindicati" + pgs("p. 3478") + "." + (haIva ? " L'<b>ivabradina</b> non si associa a diltiazem o verapamil" + pgs("p. 3460") + "." : ""));
+      h += nota("info", "Nessuna dose orale nella fonte, tranne il diltiazem ad alte dosi nella VSA severa: accanto a ogni farmaco <b>dose e rene restano " + DV + "</b> sulla scheda tecnica.");
+    } else if (r.equivoca) {
+      h += nota("", "<b>Risposta equivoca:</b> la fonte non indica una terapia propria. Restano stile di vita e fattori di rischio" + pgs("Fig. 15, p. 3484") + ". Con la guida Doppler, il tempo di recupero del flusso dopo l'acetilcolina, segno di ischemia, aiuta nei risultati equivoci" + pgs("p. 3481") + ".");
+    } else if (r.confine.length) {
+      h += nota("", "La terapia dell'endotipo (ii) si mostra quando hai scelto, al passo 2, come contare il valore al confine.");
+    } else {
+      h += passo("—", "La terapia per endotipo compare quando il test ne mostra almeno uno.");
+    }
+    h += '<div class="ter-t">Dopo</div>';
+    h += passo("↺", "Trattare e <b>rivalutare i sintomi</b>" + pgs("Fig. 13, p. 3482") + ".");
+    h += passo("⚡", "Se i sintomi restano refrattari alla terapia medica, la stimolazione del midollo spinale è un'opzione" + pgs("p. 3484") + ".");
+    el("terOut").innerHTML = h;
+  }
+
+  function disegnaLimiti(r, s) {
+    var lim = [];
+    lim.push("Il tool <b>legge risultati già ottenuti</b>: non guida il test, non sceglie il vaso né la dose, e non sostituisce il referto di chi l'ha eseguito.");
+    lim.push("<b>La soglia di CFR dipende dalla tecnica</b>" + pgs("p. 3480") + ": il tool applica &lt;2,5 al Doppler e alla termodiluizione, come la fonte" + pgs("pp. 3480–3481") + ", e segnala la fascia 2,0–2,5 della termodiluizione e il valore 2,5 del Doppler, dove la fonte stessa oscilla.");
+    lim.push("IMR 25 esatto: il testo lo conta patologico (≥25), la Fig. 13 no (&gt;25). Il tool non sceglie al posto tuo.");
+    lim.push("La vasodilatazione anomala all'acetilcolina a dose bassa <b>non ha una soglia numerica</b> nella fonte: la lettura è di chi ha eseguito il test.");
+    lim.push("Lo spasmo segue i criteri della p. 3482: una riduzione del lume ≥90% senza sintomi o senza ECG ischemico non è classificata, e il tool non la classifica.");
+    lim.push("<b>Le prevalenze della Fig. 12 vengono da una popolazione selezionata</b> — il registro ILIAS, pazienti già inviati al test invasivo — e lo spasmo varia con la dose di acetilcolina, il protocollo" + pgs("p. 3480") + " e la popolazione: più frequente nei giapponesi e nei taiwanesi che negli europei" + pgs("p. 3481") + ".");
+    lim.push("MRR &lt;2,7: soglia «considerata di recente»" + pgs("p. 3481") + ", assente dalla Fig. 13.");
+    lim.push("<b>Nessuna dose orale</b> nella fonte per i farmaci della Fig. 15, tranne il diltiazem ad alte dosi nella VSA severa" + pgs("p. 3483") + ": le altre dosi e il rene di tutti sono " + DV + ".");
+    lim.push("Il tool presuppone l'angina: il test è raccomandato nei pazienti con sintomi persistenti nonostante la terapia e con qualità di vita scarsa " + corPill("I", "B") + pgs("Rec. Table 25, p. 3485") + ".");
+    if (r.epicardio.stato === "manca" || r.epicardio.stato === "discordante") lim.push("<b>Per questo paziente:</b> la malattia epicardica non è esclusa, e gli endotipi sono provvisori.");
+    if (s.washout === "no") lim.push("<b>Per questo paziente:</b> acetilcolina senza washout di 24 ore — fuori dal protocollo della Fig. 14.");
+    el("limiti").innerHTML = "<li>" + lim.join("</li><li>") + "</li>";
+  }
+
+  function disegna() {
+    /* righe che dipendono dalla tecnica */
+    var tec = radio("tecnica");
+    mostra("rigaImr", tec === "bolo" || tec === "continua");
+    mostra("rigaMrr", tec === "continua");
+    mostra("rigaHmr", tec === "doppler");
+
+    /* scelte al confine: si azzerano quando cambia cio' per cui erano state fatte */
+    allineaScelta("sceltaCfr", tec + "|" + el("cfr").value);
+    allineaScelta("sceltaImr", tec + "|" + el("imr").value);
+
+    var s = S();
+    var r = endotipi(s);
+    var c = r.micro.cfr, im = r.micro.imr;
+
+    /* le righe di scelta compaiono solo sul valore al confine */
+    var zonaCfr = c.zona || "";
+    mostra("rigaSceltaCfr", zonaCfr !== "");
+    if (zonaCfr === "doppler25") { el("lblSceltaCfr").innerHTML = "CFR 2,5 al confine<small>testo e Fig. 13: normale · legenda Fig. 12: patologica</small>"; el("sceltaCfr").options[0].text = "— scegli —"; }
+    else if (zonaCfr === "termo20") { el("lblSceltaCfr").innerHTML = "CFR fra 2,0 e 2,5<small>la fonte adotta 2,5</small>"; el("sceltaCfr").options[0].text = "soglia 2,5 della fonte: patologica"; }
+    mostra("rigaSceltaImr", im.zona === "imr25");
+
+    disegnaEpi(r.epicardio, s);
+    disegnaMicro(r.micro, s);
+    disegnaAch(r.endotelio, r.spasmo, s);
+    disegnaEndo(r, s);
+    disegnaTerapia(r, s);
+    disegnaLimiti(r, s);
+
+    /* barra */
+    var ep = r.epicardio.stato;
+    chip("barEpi", ep === "non ostruttiva" ? "k0" : (ep === "ostruttiva" ? "k4" : (ep === "discordante" ? "k2" : "kx")),
+      ep === "non ostruttiva" ? "non ostruttiva" : (ep === "ostruttiva" ? "ostruttiva" : (ep === "discordante" ? "FFR/iFR discordanti" : "—")));
+    if (r.ostruttiva) chip("barEndo", "k4", "non ANOCA");
+    else if (r.lista.length) {
+      var br = [];
+      for (var i = 0; i < r.lista.length; i++) br.push(ENDO[r.lista[i].id].breve);
+      chip("barEndo", "k1", br.join(" + "));
+    }
+    else if (r.equivoca) chip("barEndo", "k2", "risposta equivoca");
+    else if (r.confine.length) chip("barEndo", "k2", "al confine");
+    else chip("barEndo", "kx", "—");
+  }
+
+  document.addEventListener("input", disegna);
+  document.addEventListener("change", disegna);
+  el("azzera").addEventListener("click", function () {
+    var ins = document.querySelectorAll("input");
+    for (var i = 0; i < ins.length; i++) {
+      if (ins[i].type === "checkbox" || ins[i].type === "radio") ins[i].checked = false;
+      else ins[i].value = "";
+    }
+    var sels = document.querySelectorAll("select");
+    for (var j = 0; j < sels.length; j++) { sels[j].value = ""; sels[j].setAttribute("data-per", ""); }
+    disegna();
+    window.scrollTo(0, 0);
+  });
+
+  window.ANOCA_MOTORE = { SOGLIE:SOGLIE, epicardio:epicardio, leggiCfr:leggiCfr, leggiImr:leggiImr, leggiHmr:leggiHmr, leggiMrr:leggiMrr,
+                          microcircolo:microcircolo, endotelio:endotelio, spasmo:spasmo, endotipi:endotipi, terapia:terapia };
+  disegna();
+})();
+</script>
+<script data-iphone="web">
+// Solo da un indirizzo https, cioe' dalla pagina pubblicata: aperto come file
+// il tool non cerca ne' manifest ne' service worker, che accanto al file non
+// ci sono. Un errore qui non deve fermare niente: e' un di piu'.
+(function(){
+if(location.protocol!=="https:") return;
+try{
+  var t=document.getElementsByTagName("head")[0];
+  var m=document.createElement("link"); m.rel="manifest"; m.href="manifest.webmanifest";
+  var i=document.createElement("link"); i.rel="apple-touch-icon"; i.href="icona-180.png";
+  t.appendChild(m); t.appendChild(i);
+  if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js")["catch"](function(){});
+}catch(e){}
+})();
+</script>
+<script data-iphone="fine">document.documentElement.className+=" motore-ok";</script>
+</body>
+</html>
